@@ -6,26 +6,33 @@ import io.cucumber.java.After;
 import java.net.MalformedURLException;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
+import io.cucumber.java.Scenario;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 public class HookHelper {
 
     private AppiumDriver<MobileElement> appiumDriver;
+    private static final String SL_username = System.getenv("SAUCE_USERNAME");
+    private static final String SL_accessKey = System.getenv("SAUCE_ACCESS_KEY");
 
     @Before
-    public void setUp() throws MalformedURLException
+    public void setUp(Scenario scenario) throws MalformedURLException
     {
         DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
-        desiredCapabilities.setCapability("deviceName", "SM-A205G");
-        desiredCapabilities.setCapability("udid", "R58M92BSEXD");
+        desiredCapabilities.setCapability("appiumVersion", "1.15.0");
+        desiredCapabilities.setCapability("deviceName","Samsung Galaxy S9 WQHD GoogleAPI Emulator");
+        desiredCapabilities.setCapability("deviceOrientation", "portrait");
+        desiredCapabilities.setCapability("browserName", "");
         desiredCapabilities.setCapability("platformName", "Android");
-        desiredCapabilities.setCapability("platformVersion", "9");
+        desiredCapabilities.setCapability("platformVersion", "9.0");
+        desiredCapabilities.setCapability("username", SL_username);
+        desiredCapabilities.setCapability("accesskey", SL_accessKey);
+        desiredCapabilities.setCapability("build", "Trainline Suite");
+        desiredCapabilities.setCapability("name", scenario.getName());
         desiredCapabilities.setCapability("autoGrantPermissions", true);
-        desiredCapabilities.setCapability("appPackage", "com.ebay.kijiji.ca");
-        desiredCapabilities.setCapability("appActivity", "com.ebay.app.common.startup.SplashScreenActivity");
-        desiredCapabilities.setCapability("automationName", "UiAutomator1");
+        desiredCapabilities.setCapability("app","sauce-storage:com.ebay.kijiji.ca_apkmirror.com.apk");
 
-        URL url = new URL("http://127.0.0.1:4723/wd/hub");
+        URL url = new URL("http://ondemand.saucelabs.com:80/wd/hub");
         appiumDriver = new AppiumDriver<>(url, desiredCapabilities);
     }
 
@@ -35,8 +42,14 @@ public class HookHelper {
     }
 
     @After
-    public void tearDown()
+    public void tearDown(Scenario scenario)
     {
+        if (scenario.isFailed()){
+            appiumDriver.executeScript("sauce:job-result=failed");
+        }
+        else {
+            appiumDriver.executeScript("sauce:job-result=passed");
+        }
         appiumDriver.closeApp();
     }
 }
