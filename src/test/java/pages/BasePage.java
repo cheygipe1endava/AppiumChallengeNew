@@ -66,7 +66,7 @@ public class BasePage {
     {
         Dimension dimension = appiumDriver.manage().window().getSize();
         double scrollHeightStart = dimension.getHeight() * 0.5;
-        double scrollHeightEnd = dimension.getHeight() * 0.2;
+        double scrollHeightEnd = dimension.getHeight() * 0.05;
         int scrollStart = (int) scrollHeightStart;
         int scrollEnds = (int) scrollHeightEnd;
 
