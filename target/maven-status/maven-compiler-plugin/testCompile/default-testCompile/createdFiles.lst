@@ -1,0 +1,12 @@
+pages\BasePage.class
+pages\CarsPage.class
+steps\LoginSteps.class
+pages\ProductPage.class
+pages\LoginPage.class
+helper\HookHelper.class
+pages\HomePage.class
+steps\PostPageSteps.class
+pages\FavouritesPage.class
+pages\ProfilePage.class
+pages\AccountPage.class
+runner\TestRunner.class
